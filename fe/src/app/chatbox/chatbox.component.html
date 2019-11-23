@@ -1,0 +1,118 @@
+<div class="chatbox container">
+  <div
+    *ngFor="let message of conversation"
+    [class.right]="message.user === 'user'"
+    #msgContainer
+    [scrollTop]="msgContainer.scrollHeight"
+  >
+    <!-- date -->
+    <div class="row">
+      <div class="col">
+        <small
+          ><span class="datetext font-weight-light text-sm-left">{{
+            message.date | date
+          }}</span>
+        </small>
+      </div>
+    </div>
+    <!-- messages handle zone -->
+    <div *ngFor="let msg of message.message">
+      <!-- plain text -->
+      <div class="row pb-4" *ngIf="msg.message == 'text'">
+        <div class="col">
+          <div class="messagetext" *ngFor="let textmsg of msg.text.text">
+            {{ textmsg }}
+          </div>
+        </div>
+      </div>
+      <!-- card response -->
+      <div class="row pb-4" *ngIf="msg.message == 'card'">
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <img
+              class="card-img-top"
+              src="{{ msg.card.imageUri }}"
+              alt="Card image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ msg.card.title }}</h5>
+              <p class="card-text">{{ msg.card.subtitle }}</p>
+
+              <a
+                (click)="openOrSend(button.postback)"
+                class="btn btn-primary text-white"
+                *ngFor="let button of msg.card.buttons"
+                >{{ button.text }}</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- image -->
+      <div class="row pb-4" *ngIf="msg.message == 'image'">
+        <div class="col">
+          <img
+            src="{{ msg.image.imageUri }}"
+            class="rounded float-left"
+            alt="{{ msg.image.accessibilityText }}"
+            style="width: 200px; height: 200px;"
+          />
+        </div>
+      </div>
+      <!-- quick replies -->
+      <!-- <div class="row pb-4" *ngIf="msg.message == 'quickReplies'">
+        <div class="col">
+          <div id="p1" *ngIf="!clicked">
+            <button
+              type="button"
+              (click)="sendQuick(quickReply)"
+              class="btn btn-outline-primary"
+              *ngFor="let quickReply of msg.quickReplies.quickReplies"
+            >
+              {{ quickReply }}
+            </button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <!-- loading image -->
+  <div *ngIf="loading">
+    <img
+      src="../../assets/loadingEllipsis.gif"
+      alt="texting"
+      style="width: 80px;height: 80px;"
+    />
+  </div>
+  <div *ngIf="cusQuickReplies">
+    <button
+      type="button"
+      (click)="sendQuick(quickReply)"
+      class="btn btn-outline-primary"
+      *ngFor="let quickReply of cusQuickReplies"
+    >
+      {{ quickReply }}
+    </button>
+  </div>
+  <br />
+  <br />
+  <div class="input-group fixed-bottom">
+    <input
+      type="text"
+      name="usermessage"
+      [(ngModel)]="usermessage"
+      (keyup.enter)="sendMessage(usermessage)"
+      class="form-control"
+      placeholder="Message"
+      aria-label="user message"
+      spellcheck="true"
+      autoComplete="true"
+      aria-describedby="user message"
+    />
+    <div class="input-group-append ">
+      <span class="input-group-text" (click)="sendMessage(usermessage)"
+        >SEND</span
+      >
+    </div>
+  </div>
+</div>
