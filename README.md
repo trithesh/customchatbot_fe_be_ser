@@ -33,4 +33,4 @@ steps:
 WOW! done with Custom UI chatBot.   
   
   
-This Frontend supports Rich responses Like 'CARDS', 'QuickReplie/Suggestion', 'Image', 'Text'   
+This Frontend supports Rich responses Like 'Cards', 'QuickReplies/Suggestion', 'Image', 'Text'   
